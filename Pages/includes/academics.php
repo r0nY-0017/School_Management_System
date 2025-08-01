@@ -17,7 +17,7 @@
                     <img src="images/arts.jpg" class="card-img-top" alt="Arts">
                     <div class="card-body">
                         <h5 class="card-title">Arts & Humanities</h5>
-                        <p class="card-text">Develop creativity and critical thinking through Literature, History, Sociology, and Fine Arts programs.</p>
+                        <p class="card-text">Develop creativity and critical thinking through Literature, History, Sociology, and Fine Arts programs including many cultural activities that helps students.</p>
                     </div>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                     <img src="images/commerce.jpg" class="card-img-top" alt="Commerce">
                     <div class="card-body">
                         <h5 class="card-title">Commerce & Business Studies</h5>
-                        <p class="card-text">Master the world of finance, economics, and business through our comprehensive Commerce program, including Accountancy, Business Studies, and Economics.</p>
+                        <p class="card-text">Master the world of finance, economics, and business through our comprehensive Commerce program.</p>
                     </div>
                 </div>
             </div>

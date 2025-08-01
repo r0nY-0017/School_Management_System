@@ -8,7 +8,7 @@
                     <img src="images/school1.jpg" class="card-img-top" alt="Mission">
                     <div class="card-body">
                         <h5 class="card-title">Our Mission</h5>
-                        <p class="card-text">To provide quality education that empowers students to achieve their full potential and become responsible global citizens.</p>
+                        <p class="card-text">To provide quality education that empowers students to achieve their full potential.</p>
                     </div>
                 </div>
             </div>

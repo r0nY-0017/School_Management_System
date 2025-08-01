@@ -26,7 +26,7 @@
                     <img src="images/school3.jpg" class="card-img-top" alt="Campus Tour">
                     <div class="card-body">
                         <h5 class="card-title">Campus Tour</h5>
-                        <p class="card-text">Schedule a visit to explore our campus and meet our faculty.</p>
+                        <p class="card-text">Schedule a visit to explore our campus and meet our faculty to know more.</p>
                     </div>
                 </div>
             </div>

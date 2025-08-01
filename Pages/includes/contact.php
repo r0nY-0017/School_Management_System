@@ -12,7 +12,7 @@
                         <input type="email" class="form-control" name="email" placeholder="Your Email" required>
                     </div>
                     <div class="form-group">
-                        <textarea class="form-control" name="message" rows="5" placeholder="Your Message" required></textarea>
+                        <textarea class="form-control" name="message" rows="9" placeholder="Your Message" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Send Message</button>
                 </form>
@@ -22,9 +22,9 @@
                     <img src="images/school1.jpg" class="card-img-top" alt="Contact Info">
                     <div class="card-body">
                         <h5 class="card-title">Get in Touch</h5>
-                        <p><i class="fas fa-map-marker-alt"></i> 123 School Road, City, Country</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Daffodil School, Dhaka, Bangladesh</p>
                         <p><i class="fas fa-phone"></i> +123 456 7890</p>
-                        <p><i class="fas fa-envelope"></i> info@school.com</p>
+                        <p><i class="fas fa-envelope"></i> diu.info@gmail.com</p>
                     </div>
                 </div>
             </div>

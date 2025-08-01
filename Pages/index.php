@@ -20,7 +20,7 @@ session_start();
 <body class="light-theme">
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg fixed-top light-theme">
-        <a class="navbar-brand" href="#home">School Management System</a>
+        <a class="navbar-brand" href="#home">Daffodil School</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -48,9 +48,10 @@ session_start();
                         Login
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="loginDropdown">
-                        <a class="dropdown-item" href="student_auth.php">Student</a>
-                        <a class="dropdown-item" href="parent_auth.php">Parent</a>
-                        <a class="dropdown-item" href="teacher_auth.php">Teacher</a>
+                        <a class="dropdown-item" href="student_login.php">Student</a>
+                        <a class="dropdown-item" href="parent_login.php">Parent</a>
+                        <a class="dropdown-item" href="teacher_login.php">Teacher</a>
+                        <a class="dropdown-item" href="admin_login.php">Admin</a>
                     </div>
                 </li>
                 <li class="nav-item">
@@ -124,13 +125,13 @@ session_start();
             <div class="row">
                 <div class="col-md-4">
                     <h5>About Our School</h5>
-                    <p>Founded in 1990, our school is committed to providing quality education and fostering a nurturing environment for students to thrive.</p>
+                    <p>Founded in 2025, our school is committed to providing quality education and fostering a nurturing environment for students to thrive.</p>
                 </div>
                 <div class="col-md-4">
                     <h5>Contact Info</h5>
-                    <p><i class="fas fa-map-marker-alt"></i> 123 School Road, City, Country</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Daffodil School, Dhaka, Bangladesh</p>
                     <p><i class="fas fa-phone"></i> +123 456 7890</p>
-                    <p><i class="fas fa-envelope"></i> info@school.com</p>
+                    <p><i class="fas fa-envelope"></i> diu.info@gmail.com</p>
                 </div>
                 <div class="col-md-4">
                     <h5>Follow Us</h5>
@@ -141,7 +142,7 @@ session_start();
                 </div>
             </div>
             <div class="text-center mt-4">
-                <p>&copy; <?php echo date("Y"); ?> School Management System. All Rights Reserved.</p>
+                <p>&copy; <?php echo date("Y"); ?> Team Daffodil_School. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
