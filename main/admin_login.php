@@ -1,5 +1,53 @@
 <?php
 session_start();
+include 'config/db_connect.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Validate inputs
+    $identifier = trim($_POST['identifier'] ?? '');
+    $password = $_POST['password'] ?? '';
+
+    if (empty($identifier) || empty($password)) {
+        $_SESSION['error'] = "Please enter both Admin ID/Email and Password";
+        header("Location: admin_login.php");
+        exit();
+    }
+
+    // Use prepared statement to prevent SQL injection
+    $sql = "SELECT admin_id, password FROM admins WHERE admin_id = ? OR email = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    
+    if (!$stmt) {
+        $_SESSION['error'] = "Database error. Please try again later.";
+        header("Location: admin_login.php");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "ss", $identifier, $identifier);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    if (mysqli_num_rows($result) == 1) {
+        $row = mysqli_fetch_assoc($result);
+        
+        if (password_verify($password, $row['password'])) {
+            // Login successful
+            $_SESSION['user_id'] = $row['admin_id']; // Fixed to use admin_id
+            session_regenerate_id(true); // Prevent session fixation
+            
+            header("Location: admin_dashboard.php");
+            exit();
+        } else {
+            $_SESSION['error'] = "Invalid password";
+        }
+    } else {
+        $_SESSION['error'] = "Invalid Admin ID or Email";
+    }
+    
+    mysqli_stmt_close($stmt);
+    header("Location: admin_login.php"); // Fixed redirect to login page on failure
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -8,10 +56,8 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login</title>
-    
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/login.css">
 </head>
@@ -24,7 +70,7 @@ session_start();
                 <?php
                 if (isset($_SESSION['error'])) {
                     echo '<div class="error-msg">
-                            ' . $_SESSION['error'] . '
+                            ' . htmlspecialchars($_SESSION['error']) . '
                             <button class="close-btn">&times;</button>
                           </div>';
                     unset($_SESSION['error']);
@@ -57,33 +103,3 @@ session_start();
     </script>
 </body>
 </html>
-
-<?php
-include 'db_connect.php';
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $identifier = mysqli_real_escape_string($conn, $_POST['identifier']);
-    $password = $_POST['password'];
-
-    $sql = "SELECT * FROM admins WHERE admin_id = '$identifier' OR email = '$identifier'";
-    $result = mysqli_query($conn, $sql);
-
-    if (mysqli_num_rows($result) == 1) {
-        $row = mysqli_fetch_assoc($result);
-        
-        if (password_verify($password, $row['password'])) {
-            $_SESSION['user_id'] = $row['id'];
-            $_SESSION['role'] = 'admin';
-            header("Location: admin_dashboard.php");
-            exit();
-        } else {
-            $_SESSION['error'] = "Invalid password";
-        }
-    } else {
-        $_SESSION['error'] = "Invalid Admin ID or Email";
-    }
-    
-    header("Location: admin_login.php");
-    exit();
-}
-?>
