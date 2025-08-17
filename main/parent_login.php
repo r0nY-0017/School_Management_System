@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+// Prevent caching of login page
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +32,7 @@ session_start();
                     unset($_SESSION['error']);
                 }
                 ?>
-                <form action="parent_auth.php" method="POST" class="login-form">
+                <form action="parent_login.php" method="POST" class="login-form">
                     <div class="input-group">
                         <label for="identifier"><i class="fas fa-user"></i> Parent ID or Email</label>
                         <input type="text" name="identifier" id="identifier" placeholder="Enter Parent ID or Email" required>
@@ -54,13 +59,13 @@ session_start();
 </html>
 
 <?php
-include 'db_connect.php';
+include 'config/db_connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $identifier = mysqli_real_escape_string($conn, $_POST['identifier']);
     $password = $_POST['password'];
 
-    $sql = "SELECT * FROM parents WHERE parent_id = '$identifier' OR email = '$identifier'";
+    $sql = "SELECT * FROM parents WHERE id = '$identifier' OR email = '$identifier'";
     $result = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($result) == 1) {
@@ -76,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $_SESSION['error'] = "Invalid Parent ID or Email";
     }
-    header("Location: parent_auth.php");
+    header("Location: parent_login.php");
     exit();
 }
 ?>

@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+// Prevent caching to avoid back button issues
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
+
 require_once 'config/db_connect.php';
 include 'api/get_admin_details.php';
 ?>
@@ -846,6 +852,32 @@ include 'api/get_admin_details.php';
         </div>
     </div>
 
+    <script>
+        // Prevent back button navigation
+        history.pushState(null, null, location.href);
+        window.onpopstate = function() {
+            history.go(1);
+        };
+        
+        // Disable keyboard shortcuts that might navigate away
+        document.addEventListener('keydown', function(e) {
+            // Disable F5, Ctrl+R (refresh)
+            if (e.key === 'F5' || (e.ctrlKey && e.key === 'r')) {
+                e.preventDefault();
+                return false;
+            }
+            // Disable Alt+Left (back), Alt+Right (forward)
+            if (e.altKey && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
+                e.preventDefault();
+                return false;
+            }
+            // Disable Backspace (back) when not in input field
+            if (e.key === 'Backspace' && !['INPUT', 'TEXTAREA'].includes(e.target.tagName)) {
+                e.preventDefault();
+                return false;
+            }
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>

@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+// Prevent caching of login page
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +32,7 @@ session_start();
                     unset($_SESSION['error']);
                 }
                 ?>
-                <form action="student_auth.php" method="POST" class="login-form">
+                <form action="student_login.php" method="POST" class="login-form">
                     <div class="input-group">
                         <label for="identifier"><i class="fas fa-user"></i> Student ID or Email</label>
                         <input type="text" name="identifier" id="identifier" placeholder="Enter Student ID or Email" required>
@@ -54,13 +59,13 @@ session_start();
 </html>
 
 <?php
-include 'db_connect.php';
+include 'config/db_connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $identifier = mysqli_real_escape_string($conn, $_POST['identifier']);
     $password = $_POST['password'];
 
-    $sql = "SELECT * FROM students WHERE student_id = '$identifier' OR email = '$identifier'";
+    $sql = "SELECT * FROM students WHERE id = '$identifier' OR email = '$identifier'";
     $result = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($result) == 1) {
@@ -76,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $_SESSION['error'] = "Invalid Student ID or Email";
     }
-    header("Location: student_auth.php");
+    header("Location: student_login.php");
     exit();
 }
 ?>

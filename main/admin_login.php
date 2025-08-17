@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+// Prevent caching of login page
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
+
 include 'config/db_connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
