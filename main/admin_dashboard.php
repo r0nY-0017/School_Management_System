@@ -45,7 +45,6 @@ include 'api/get_admin_details.php';
     </div>
 
     <div class="main-content">
-        <!-- Dashboard Section -->
         <div id="dashboard" class="form-section active">
             <div class="header">
                 <h2>Welcome back, Admin!</h2>
