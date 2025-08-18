@@ -1,11 +1,5 @@
 <?php
 session_start();
-
-// Prevent caching to avoid back button issues
-header("Cache-Control: no-cache, no-store, must-revalidate");
-header("Pragma: no-cache");
-header("Expires: 0");
-
 require_once 'config/db_connect.php';
 include 'api/get_admin_details.php';
 ?>
@@ -259,6 +253,8 @@ include 'api/get_admin_details.php';
 
 
 
+
+
         <!-- Profile Section -->
         <div id="profile" class="form-section">
             <div class="card form-container">
@@ -427,6 +423,11 @@ include 'api/get_admin_details.php';
 
 
 
+
+
+
+
+
         <!-- Students Section -->
         <div id="students" class="form-section">
             <div class="card" id="student-list">
@@ -505,11 +506,11 @@ include 'api/get_admin_details.php';
                             <label for="studentClass" class="form-label">Class</label>
                             <select class="form-control" id="studentClass" required>
                                 <option value="">Select Class</option>
-                                <option>Class 6</option>
-                                <option>Class 7</option>
-                                <option>Class 8</option>
-                                <option>Class 9</option>
-                                <option>Class 10</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
                             </select>
                         </div>
                         <div class="form-group mb-4">
@@ -852,33 +853,8 @@ include 'api/get_admin_details.php';
         </div>
     </div>
 
-    <script>
-        // Prevent back button navigation
-        history.pushState(null, null, location.href);
-        window.onpopstate = function() {
-            history.go(1);
-        };
-        
-        // Disable keyboard shortcuts that might navigate away
-        document.addEventListener('keydown', function(e) {
-            // Disable F5, Ctrl+R (refresh)
-            if (e.key === 'F5' || (e.ctrlKey && e.key === 'r')) {
-                e.preventDefault();
-                return false;
-            }
-            // Disable Alt+Left (back), Alt+Right (forward)
-            if (e.altKey && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
-                e.preventDefault();
-                return false;
-            }
-            // Disable Backspace (back) when not in input field
-            if (e.key === 'Backspace' && !['INPUT', 'TEXTAREA'].includes(e.target.tagName)) {
-                e.preventDefault();
-                return false;
-            }
-        });
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>

@@ -21,17 +21,19 @@ try {
             $email = $_POST['email'];
             $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
             
-            // Check if student ID already exists
-            $check_sql = "SELECT id FROM students WHERE id = ?";
+           /// Check if student ID, email, or roll already exists
+            $check_sql = "SELECT id, email, roll FROM students WHERE id = ? OR email = ? OR roll = ?";
             $check_stmt = mysqli_prepare($conn, $check_sql);
-            mysqli_stmt_bind_param($check_stmt, "s", $student_id);
+            mysqli_stmt_bind_param($check_stmt, "sss", $student_id, $email, $roll);
             mysqli_stmt_execute($check_stmt);
             $check_result = mysqli_stmt_get_result($check_stmt);
-            
+
             if (mysqli_num_rows($check_result) > 0) {
-                echo json_encode(['success' => false, 'error' => 'Student ID already exists']);
-                break;
+                echo json_encode(['success' => false, 'error' => 'Student ID, email, or roll number already exists']);
+                mysqli_stmt_close($check_stmt);
+                exit();
             }
+            mysqli_stmt_close($check_stmt);
             
             $sql = "INSERT INTO students (id, name, class, roll, email, password) VALUES (?, ?, ?, ?, ?, ?)";
             $stmt = mysqli_prepare($conn, $sql);
