@@ -1,0 +1,41 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-header {
+    border-bottom: 1px solid #e9ecef;
+}
+
+.card-header.bg-light,
+.card-body.bg-light {
+    background-color: #f8f9fa !important;
+    color: #333;
+}
+
+.progress {
+    height: 10px;
+}
+
+.modal-content {
+    border-radius: 10px;
+}
+
+.avatar {
+    font-weight: bold;
+    text-align: center;
+}
+
+.badge {
+    font-size: 0.9em;
+    padding: 0.5em 1em;
+}
