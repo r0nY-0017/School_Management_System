@@ -1,4 +1,8 @@
 <?php
+// Prevent any output before JSON response
+error_reporting(0);
+ini_set('display_errors', 0);
+
 session_start();
 require_once '../config/db_connect.php';
 
@@ -13,19 +17,32 @@ $parent_id = $_SESSION['user_id'];
 $action = $_POST['action'] ?? '';
 
 if ($action === 'get_profile') {
-    $sql = "SELECT id, name, email, phone, address, occupation, relation, student_id FROM parents WHERE id = ?";
-    $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "s", $parent_id);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-    $parent = mysqli_fetch_assoc($result);
+    try {
+        $sql = "SELECT id, name, email, student_id FROM parents WHERE id = ?";
+        $stmt = mysqli_prepare($conn, $sql);
+        if (!$stmt) {
+            echo json_encode(['success' => false, 'error' => 'Database error: ' . mysqli_error($conn)]);
+            exit();
+        }
+        mysqli_stmt_bind_param($stmt, "s", $parent_id);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $parent = mysqli_fetch_assoc($result);
 
-    if ($parent) {
-        echo json_encode(['success' => true, 'parent' => $parent]);
-    } else {
-        echo json_encode(['success' => false, 'error' => 'Parent not found']);
+        if ($parent) {
+            // Add default values for missing columns
+            $parent['phone'] = '';
+            $parent['address'] = '';
+            $parent['occupation'] = '';
+            $parent['relation'] = '';
+            echo json_encode(['success' => true, 'parent' => $parent]);
+        } else {
+            echo json_encode(['success' => false, 'error' => 'Parent not found']);
+        }
+        mysqli_stmt_close($stmt);
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'error' => 'Database error: ' . $e->getMessage()]);
     }
-    mysqli_stmt_close($stmt);
 } elseif ($action === 'update_profile') {
     $name = $_POST['name'] ?? '';
     $email = $_POST['email'] ?? '';
@@ -53,10 +70,10 @@ if ($action === 'get_profile') {
     }
     mysqli_stmt_close($check_stmt);
 
-    // Update parent profile
-    $sql = "UPDATE parents SET name = ?, email = ?, phone = ?, address = ?, occupation = ? WHERE id = ?";
+    // Update parent profile (only name and email since other columns don't exist in database)
+    $sql = "UPDATE parents SET name = ?, email = ? WHERE id = ?";
     $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "ssssss", $name, $email, $phone, $address, $occupation, $parent_id);
+    mysqli_stmt_bind_param($stmt, "sss", $name, $email, $parent_id);
 
     if (mysqli_stmt_execute($stmt)) {
         echo json_encode(['success' => true]);
@@ -163,15 +180,23 @@ if ($action === 'get_profile') {
     }
     mysqli_stmt_close($stmt);
 } elseif ($action === 'get_all_teachers') {
-    $sql = "SELECT id, name, subject FROM teachers WHERE status = 'Active'";
-    $result = mysqli_query($conn, $sql);
-    $teachers = [];
+    try {
+        $sql = "SELECT id, name, subject FROM teachers";
+        $result = mysqli_query($conn, $sql);
+        if (!$result) {
+            echo json_encode(['success' => false, 'error' => 'Database error: ' . mysqli_error($conn)]);
+            exit();
+        }
+        $teachers = [];
 
-    while ($row = mysqli_fetch_assoc($result)) {
-        $teachers[] = $row;
+        while ($row = mysqli_fetch_assoc($result)) {
+            $teachers[] = $row;
+        }
+
+        echo json_encode(['success' => true, 'teachers' => $teachers]);
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'error' => 'Database error: ' . $e->getMessage()]);
     }
-
-    echo json_encode(['success' => true, 'teachers' => $teachers]);
 } else {
     echo json_encode(['success' => false, 'error' => 'Invalid action']);
 }

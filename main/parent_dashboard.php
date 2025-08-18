@@ -409,7 +409,7 @@ $student = mysqli_fetch_assoc($student_result);
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Relation</label>
-                            <input type="text" class="form-control" id="profileRelation" value="<?php echo htmlspecialchars($parent['relation']); ?>" disabled>
+                            <input type="text" class="form-control" id="profileRelation" value="<?php echo htmlspecialchars($parent['relation'] ?? ''); ?>" disabled>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Student ID</label>
@@ -530,7 +530,18 @@ $student = mysqli_fetch_assoc($student_result);
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 body: 'action=get_all_teachers'
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text().then(text => {
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        throw new Error('Invalid JSON response: ' + text.substring(0, 100));
+                    }
+                });
+            })
             .then(data => {
                 if (data.success) {
                     const select = document.getElementById('teacherSelect');
@@ -563,7 +574,18 @@ $student = mysqli_fetch_assoc($student_result);
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 body: 'action=get_my_requests'
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text().then(text => {
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        throw new Error('Invalid JSON response: ' + text.substring(0, 100));
+                    }
+                });
+            })
             .then(data => {
                 if (data.success) {
                     let html = '';
@@ -662,7 +684,18 @@ $student = mysqli_fetch_assoc($student_result);
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 body: 'action=get_profile'
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text().then(text => {
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        throw new Error('Invalid JSON response: ' + text.substring(0, 100));
+                    }
+                });
+            })
             .then(data => {
                 if (data.success) {
                     document.getElementById('profileName').value = data.parent.name;
@@ -859,6 +892,21 @@ $student = mysqli_fetch_assoc($student_result);
                 });
             });
         }
+
+        // Add event listeners when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Teacher request form
+            document.getElementById('teacherRequestForm').addEventListener('submit', handleTeacherRequest);
+            
+            // Profile update form
+            document.getElementById('updateProfileForm').addEventListener('submit', handleUpdateProfile);
+            
+            // Password change form
+            document.getElementById('changePasswordForm').addEventListener('submit', handleChangePassword);
+            
+            // Student update form
+            document.getElementById('updateStudentForm').addEventListener('submit', handleUpdateStudent);
+        });
     </script>
 </body>
 </html>
